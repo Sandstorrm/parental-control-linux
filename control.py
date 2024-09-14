@@ -27,7 +27,7 @@ def disable_downloads():
     while settings['enabled']:
         if settings['run']['disable_downloads']:
             interval = settings['settings']['disable_downloads_interval']
-            downloads_path = os.path.expanduser('~/Downloads')
+            downloads_path = settings['settings']['downloads_path']
             
             items_deleted = False
             try:

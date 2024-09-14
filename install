@@ -1,6 +1,6 @@
-import os,time
+import os,yaml
+from pathlib import Path
 
-# Define the service configuration
 service_content = """[Unit]
 Description=Parental control main
 
@@ -8,42 +8,30 @@ Description=Parental control main
 ExecStart=/usr/bin/python3 {script_dir}/control.py
 WorkingDirectory={script_dir}
 Restart=always
-User={user}
+User=root
 
 [Install]
 WantedBy=multi-user.target
 """
 
-# Get the directory where this script is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
 user = os.getenv('USER')
-
-# Format the service content with the script directory and username
+home = os.path.expanduser('~')
 formatted_service_content = service_content.format(script_dir=script_dir, user=user)
 
-# Path to the systemd service file in the script's directory
-service_file_path = ('/etc/systemd/system/parental_control.service')
+with open('settings.yml', 'r') as file:
+    settings = yaml.safe_load(file)
+    settings['settings']['downloads_path'] = os.path.join(home, 'Downloads')
+    settings['settings']['firefox_profile_path'] = os.path.join(home, 'snap/firefox/common/.mozilla/firefox/zvfmrorl.default')
+    yaml.dump(settings, open('settings.yml', 'w'))
 
-# Write the service file
-try:
-    with open(service_file_path, 'w') as file:
-        file.write(formatted_service_content)
-    print(f'Successfully wrote service file to {service_file_path}')
-except PermissionError:
-    print(f'Permission denied. Run this script with sudo to write to {service_file_path}.')
-    exit(1)
-except Exception as e:
-    print(f'An error occurred: {e}')
-    exit(1)
-
-# Commands to reload systemd, enable, and start the service
 commands = [
+    f"echo '{formatted_service_content}' | sudo tee /etc/systemd/system/parental_control.service",
     'sudo systemctl daemon-reload',
     'sudo systemctl enable parental_control',
     'sudo systemctl start parental_control'
 ]
 
-# Execute commands
 for command in commands:
     os.system(command)
     print(f'Executed: {command}')

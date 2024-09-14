@@ -7,5 +7,6 @@ run:
 settings:
   disable_downloads_interval: 3
   disable_websites_interval: 10
+  downloads_path: /home/sand/Downloads
   firefox_profile_path: /home/sand/snap/firefox/common/.mozilla/firefox/zvfmrorl.default
   kill_java_interval: 10

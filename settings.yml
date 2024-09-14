@@ -3,7 +3,7 @@ run:
   disable_downloads: false
   disable_mc: false
   disable_phone: false
-  disable_websites: true
+  disable_websites: false
 settings:
   disable_downloads_interval: 3
   disable_websites_interval: 10

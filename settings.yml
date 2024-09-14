@@ -10,3 +10,4 @@ settings:
   downloads_path: 
   firefox_profile_path: 
   kill_java_interval: 10
+  excluded_websites: ["acellus", "example.com", "anotherdomain"]

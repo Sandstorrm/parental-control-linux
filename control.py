@@ -62,6 +62,7 @@ def disable_websites():
     original_db_path = os.path.join(firefox_profile_path, 'places.sqlite')
     temp_db_path = 'temp_places.sqlite'
     hosts_file = '/etc/hosts'
+    excluded_domains = settings['settings']['excluded_domains']
 
     while settings['enabled']:
         changes_made = False
@@ -94,7 +95,7 @@ def disable_websites():
                 with open(hosts_file, 'a') as hosts:
                     added_count = 0
                     for domain in domains:
-                        if not any(line.strip() == f"0.0.0.0 {domain}" for line in existing_lines):
+                        if not any(excluded in domain for excluded in excluded_domains) and not any(line.strip() == f"0.0.0.0 {domain}" for line in existing_lines):
                             hosts.write(f"0.0.0.0 {domain}\n")
                             added_count += 1
                     

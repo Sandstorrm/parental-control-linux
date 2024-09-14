@@ -12,5 +12,5 @@
 To install, you can use the following command:
 
 ```bash
-git clone https://github.com/Sandstorrm/parental-control-linux.git && cd parental-control-linux && sudo python3 install
+git clone https://github.com/Sandstorrm/parental-control-linux.git && cd parental-control-linux && python3 install
 ```

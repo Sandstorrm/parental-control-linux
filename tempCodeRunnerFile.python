@@ -1,6 +1,0 @@
-
-
-# # Execute commands
-# for command in commands:
-#     os.system(command)
-#     print(f'Executed: {command}')

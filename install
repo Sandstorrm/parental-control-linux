@@ -22,7 +22,7 @@ formatted_service_content = service_content.format(script_dir=script_dir, user=u
 with open('settings.yml', 'r') as file:
     settings = yaml.safe_load(file)
     settings['settings']['downloads_path'] = os.path.join(home, 'Downloads')
-    settings['settings']['firefox_profile_path'] = os.path.join(home, 'snap/firefox/common/.mozilla/firefox/zvfmrorl.default')
+    settings['settings']['firefox_profile_path'] = os.path.join(home, 'snap/firefox/common/.mozilla/firefox/zvfmrorl.default') # TODO: add: find . -name places.sqlite
     yaml.dump(settings, open('settings.yml', 'w'))
 
 commands = [

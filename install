@@ -20,7 +20,7 @@ formatted_service_content = service_content.format(script_dir=script_dir, user=u
 
 os.chdir(home)
 result = subprocess.run(['find', '.', '-name', 'places.sqlite'], capture_output=True, text=True)
-path = result.stdout.strip().lstrip('./').rsplit('/places.sqlite', 1)[0]
+path = os.path.dirname(result.stdout.strip()).lstrip('.').lstrip('/') # if it works it works, dont touch
 os.chdir(script_dir)
 
 with open('settings.yml', 'r') as file:

@@ -1,0 +1,14 @@
+import os
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+commands = [
+    'sudo systemctl disable parental_control',
+    'sudo systemctl stop parental_control',
+    'sudo rm -rf /etc/systemd/system/parental_control.service',
+    f'sudo rm -rf {script_dir}'
+]
+for command in commands:
+    os.system(command)
+    print(f'Executed: {command}')
+os._exit(0)

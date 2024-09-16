@@ -6,11 +6,12 @@ run:
   disable_websites: false
 settings:
   disable_downloads_interval: 3
+  disable_phone_interval: 3
   disable_websites_interval: 10
   downloads_path: /home/sand/Downloads
+  excluded_domains:
+  - acellus
+  - anotherr-website
+  - example.com
   firefox_profile_path: /home/sand/snap/firefox/common/.mozilla/firefox/zvfmrorl.default
   kill_java_interval: 10
-  excluded_domains:
-    - acellus
-    - anotherr-website
-    - example.com

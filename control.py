@@ -1,10 +1,4 @@
-import yaml
-import time
-import subprocess
-import os
-import threading
-import shutil
-import sqlite3
+import yaml, time, subprocess, os, threading, shutil, sqlite3
 from urllib.parse import urlparse
 
 def load_settings():
@@ -47,11 +41,23 @@ def disable_downloads():
             
             time.sleep(interval)
 
-def disable_phone():
+def disable_phone(): # if someone finds this, youre on youre own on this one, Im using google family link with an api request I captured from my browser but Im not publishing that part ofcourse
+    try:
+        from api import flink_request 
+    except ImportError:
+        print("api.py not found. Skipping phone disabling.")
+        return
+        
+    prevos_state = None
     while settings['enabled']:
-        if settings['run']['disable_phone']:
-            # Implement logic to disable phone
-            print("Phone disabled")
+        interval = settings['settings']['disable_phone_interval']
+        current_state = settings['run']['disable_phone']
+        if current_state != prevos_state:
+            # api request
+            flink_request(current_state)
+            print(f'Sent api request to set Phone Disabled to {current_state}')
+            prevos_state = current_state
+        time.sleep(interval)
 
 def disable_websites():
     if os.geteuid() != 0:

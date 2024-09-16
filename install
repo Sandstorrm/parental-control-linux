@@ -1,5 +1,4 @@
-import os,yaml
-from pathlib import Path
+import os,yaml, subprocess
 
 service_content = """[Unit]
 Description=Parental control main
@@ -19,10 +18,15 @@ user = os.getenv('USER')
 home = os.path.expanduser('~')
 formatted_service_content = service_content.format(script_dir=script_dir, user=user)
 
+os.chdir(home)
+result = subprocess.run(['find', '.', '-name', 'places.sqlite'], capture_output=True, text=True)
+path = result.stdout.strip().lstrip('./').rsplit('/places.sqlite', 1)[0]
+os.chdir(script_dir)
+
 with open('settings.yml', 'r') as file:
     settings = yaml.safe_load(file)
     settings['settings']['downloads_path'] = os.path.join(home, 'Downloads')
-    settings['settings']['firefox_profile_path'] = os.path.join(home, 'snap/firefox/common/.mozilla/firefox/zvfmrorl.default') # TODO: add: find . -name places.sqlite
+    settings['settings']['firefox_profile_path'] = os.path.join(home, path)
     yaml.dump(settings, open('settings.yml', 'w'))
 
 commands = [

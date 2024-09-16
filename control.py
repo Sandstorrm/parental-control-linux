@@ -48,15 +48,15 @@ def disable_phone(): # if someone finds this, youre on youre own on this one, Im
         print("api.py not found. Skipping phone disabling.")
         return
         
-    prevos_state = None
+    prevous_state = None
     while settings['enabled']:
         interval = settings['settings']['disable_phone_interval']
         current_state = settings['run']['disable_phone']
-        if current_state != prevos_state:
+        if current_state != prevous_state:
             # api request
             flink_request(current_state)
             print(f'Sent api request to set Phone Disabled to {current_state}')
-            prevos_state = current_state
+            prevous_state = current_state
         time.sleep(interval)
 
 def disable_websites():

@@ -6,21 +6,31 @@ def load_settings():
     with open('settings.yml', 'r') as file:
         settings = yaml.safe_load(file)
 
+def re_enable_daily():
+    while settings['enabled']:
+        if settings['settings']['re_enable_daily']:
+            date = time.strftime("%m-%d-%Y")
+            last_date = settings['settings']['last_modified']
+            if date != last_date:
+                for key in settings['run']:
+                    settings['run'][key] = True
+                settings['settings']['last_modified'] = date
+                with open('settings.yml', 'w') as file:
+                    yaml.dump(settings, file)
+
 def disable_mc():
     while settings['enabled']:
         if settings['run']['disable_mc']:
-            interval = settings['settings']['kill_java_interval']
             try:
                 subprocess.run(['pkill', 'java'], check=True)
                 print("Java died lol")
             except subprocess.CalledProcessError:
                 print("Java is already dead")
-            time.sleep(interval)
+            time.sleep(int(settings['settings']['kill_java_interval']))
 
 def disable_downloads():
     while settings['enabled']:
         if settings['run']['disable_downloads']:
-            interval = settings['settings']['disable_downloads_interval']
             downloads_path = settings['settings']['downloads_path']
             
             items_deleted = False
@@ -39,7 +49,7 @@ def disable_downloads():
             except Exception as e:
                 print(f"Error clearing Downloads folder: {e}")
             
-            time.sleep(interval)
+            time.sleep(int(settings['settings']['disable_downloads_interval']))
 
 def disable_phone(): # if someone finds this, youre on youre own on this one, Im using google family link with an api request I captured from my browser but Im not publishing that part ofcourse
     try:
@@ -50,14 +60,13 @@ def disable_phone(): # if someone finds this, youre on youre own on this one, Im
         
     prevous_state = None
     while settings['enabled']:
-        interval = settings['settings']['disable_phone_interval']
         current_state = settings['run']['disable_phone']
         if current_state != prevous_state:
             # api request
             flink_request(current_state)
             print(f'Sent api request to set Phone Disabled to {current_state}')
             prevous_state = current_state
-        time.sleep(interval)
+        time.sleep(int(settings['settings']['disable_phone_interval']))
 
 def disable_websites():
     if os.geteuid() != 0:
@@ -161,7 +170,8 @@ def main():
                     threading.Thread(target=disable_mc, daemon=True),
                     threading.Thread(target=disable_downloads),
                     threading.Thread(target=disable_phone),
-                    threading.Thread(target=disable_websites)
+                    threading.Thread(target=disable_websites),
+                    threading.Thread(target=re_enable_daily)
                 ]
                 for thread in threads:
                     thread.start()

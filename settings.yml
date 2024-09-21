@@ -15,3 +15,5 @@ settings:
   - example.com
   firefox_profile_path: /home/sand/snap/firefox/common/.mozilla/firefox/zvfmrorl.default
   kill_java_interval: 10
+  last_modified: 09-20-2024
+  re_enable_daily: true

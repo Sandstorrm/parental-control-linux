@@ -3,11 +3,18 @@ from urllib.parse import urlparse
 
 def load_settings():
     global settings
+
+    def reload():
+        shutil.copy('default_settings.yml', 'settings.yml')
+        load_settings()
+
     try:
         with open('settings.yml', 'r') as file:
             settings = yaml.safe_load(file)
     except (FileNotFoundError, yaml.YAMLError):
-        shutil.copy('default_settings.yml', 'settings.yml')
+        reload()
+    if settings is None or not settings['enabled']:
+        reload()
 
 
 def re_enable_daily():

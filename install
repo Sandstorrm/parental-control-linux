@@ -1,4 +1,4 @@
-import os,yaml, subprocess
+import os, yaml, subprocess, shutil
 
 service_content = """[Unit]
 Description=Parental control main
@@ -28,6 +28,8 @@ with open('settings.yml', 'r') as file:
     settings['settings']['downloads_path'] = os.path.join(home, 'Downloads')
     settings['settings']['firefox_profile_path'] = os.path.join(home, path)
     yaml.dump(settings, open('settings.yml', 'w'))
+
+shutil.copy('default_settings.yml', 'settings.yml')
 
 commands = [
     f"echo '{formatted_service_content}' | sudo tee /etc/systemd/system/parental_control.service",

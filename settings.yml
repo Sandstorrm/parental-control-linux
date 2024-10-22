@@ -8,12 +8,12 @@ settings:
   disable_downloads_interval: 3
   disable_phone_interval: 3
   disable_websites_interval: 10
-  downloads_path: /home/sand/Downloads
+  downloads_path: 
   excluded_domains:
   - acellus
   - anotherr-website
   - example.com
-  firefox_profile_path: /home/sand/snap/firefox/common/.mozilla/firefox/zvfmrorl.default
+  firefox_profile_path: 
   kill_java_interval: 10
   last_modified: 09-20-2024
   re_enable_daily: true

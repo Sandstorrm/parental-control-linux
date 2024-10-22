@@ -5,8 +5,10 @@ def load_settings():
     global settings
 
     def reload():
+        print('Settings broke, loading default settings and restarting service')
         shutil.copy('default_settings.yml', 'settings.yml')
         load_settings()
+        os.system('sudo systemctl restart parental_control')
 
     try:
         with open('settings.yml', 'r') as file:
